@@ -13,6 +13,7 @@ import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
+
 def login_user(request):
     if request.method == 'POST':
         if request.content_type == 'application/json':
@@ -46,8 +47,10 @@ def login_user(request):
                 return JsonResponse(data)
             else:
                 # Log a message if authentication failed
-                logger.warning(f"Authentication failed for username: {username}")
-                data = {"status": "Failed", "message": "Invalid username or password"}
+                logger.warning(
+                    f"Authentication failed for username: {username}")
+                data = {"status": "Failed",
+                        "message": "Invalid username or password"}
                 return JsonResponse(data, status=401)
         else:
             # If either username or password is None, return a response with status 400
@@ -56,16 +59,19 @@ def login_user(request):
         # If request method is not POST, return a response with status 405 (Method Not Allowed)
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
+
 def logout_user(request):
     if request.method == 'POST':
         return logout_request(request)
     else:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
+
 def logout_request(request):
     logout(request)
     messages.success(request, "You have successfully logged out.")
     return JsonResponse({"userName": ""})
+
 
 def registration(request):
     if request.method == 'POST':
@@ -95,7 +101,8 @@ def registration(request):
 
         if not username_exist:
             # Create user in auth_user table
-            user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, password=password, email=email)
+            user = User.objects.create_user(
+                username=username, first_name=first_name, last_name=last_name, password=password, email=email)
             # Login the user and redirect to list page
             login(request, user)
             data = {"userName": username, "status": "Authenticated"}
@@ -106,6 +113,7 @@ def registration(request):
     else:
         # If request method is not POST, return a response with status 405 (Method Not Allowed)
         return JsonResponse({'error': 'Method not allowed'}, status=405)
+
 
 def register(request):
     if request.method == 'POST':
@@ -119,47 +127,56 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'djangoapp/register.html', {'form': form})
 
+
 def get_cars(request):
     count = CarMake.objects.filter().count()
     print(count)
-    if(count == 0):
+    if (count == 0):
         initiate()
     car_models = CarModel.objects.select_related('car_make')
     cars = []
     for car_model in car_models:
-        cars.append({"CarModel": car_model.name, "CarMake": car_model.car_make.name})
-    return JsonResponse({"CarModels":cars})
+        cars.append({"CarModel": car_model.name,
+                    "CarMake": car_model.car_make.name})
+    return JsonResponse({"CarModels": cars})
 
-#Update the `get_dealerships` render list of dealerships all by default, particular state if state is passed
+# Update the `get_dealerships` render list of dealerships all by default, particular state if state is passed
+
+
 def get_dealerships(request, state="All"):
-    if(state == "All"):
+    if (state == "All"):
         endpoint = "/fetchDealers"
     else:
         endpoint = "/fetchDealers/"+state
     dealerships = get_request(endpoint)
-    return JsonResponse({"status":200,"dealers":dealerships})
+    return JsonResponse({"status": 200, "dealers": dealerships})
+
 
 def get_dealer_reviews(request, dealer_id):
     # if dealer id has been provided
-    if(dealer_id):
+    if (dealer_id):
         endpoint = "/fetchReviews/dealer/"+str(dealer_id)
         reviews = get_request(endpoint)
         for review_detail in reviews:
             response = analyze_review_sentiments(review_detail['review'])
             print(response)
             review_detail['sentiment'] = response['sentiment']
-        return JsonResponse({"status":200,"reviews":reviews})
+        return JsonResponse({"status": 200, "reviews": reviews})
     else:
-        return JsonResponse({"status":400,"message":"Bad Request"})
+        return JsonResponse({"status": 400, "message": "Bad Request"})
+
 
 def get_dealer_details(request, dealer_id):
-    if(dealer_id):
+    if (dealer_id):
         endpoint = "/fetchDealer/"+str(dealer_id)
         dealership = get_request(endpoint)
-        return JsonResponse({"status":200,"dealer":[dealership]})
+        return JsonResponse({"status": 200, "dealer": [dealership]})
     else:
-        return JsonResponse({"status":400,"message":"Bad Request"})
+        return JsonResponse({"status": 400, "message": "Bad Request"})
+
+
 from django.shortcuts import render
+
 
 def dealer_details(request, dealer_id):
     if dealer_id:
@@ -177,6 +194,7 @@ def dealer_details(request, dealer_id):
         return render(request, 'dealer_details.html', context)
     else:
         return JsonResponse({"status": 400, "message": "Bad Request"})
+
 
 def get_dealers(request):
     # Fetch the list of dealers from the backend service
@@ -203,16 +221,18 @@ def get_dealers(request):
         logger.warning(f"Unexpected data format: {dealers}")
         return render(request, 'dealers.html', {"error": "Failed to fetch dealers"})
 
+
 def add_review(request):
-    if(request.user.is_anonymous == False):
+    if (request.user.is_anonymous == False):
         data = json.loads(request.body)
         try:
             response = post_review(data)
-            return JsonResponse({"status":200})
+            return JsonResponse({"status": 200})
         except:
-            return JsonResponse({"status":401,"message":"Error in posting review"})
+            return JsonResponse({"status": 401, "message": "Error in posting review"})
     else:
-        return JsonResponse({"status":403,"message":"Unauthorized"})
+        return JsonResponse({"status": 403, "message": "Unauthorized"})
+
 
 def populate_database(request):
     if request.method == 'POST':
@@ -228,7 +248,8 @@ def populate_database(request):
                 car_make, created = CarMake.objects.get_or_create(name=make)
 
                 for model in car_models[make]:
-                    car_model, created = CarModel.objects.get_or_create(name=model, car_make=car_make)
+                    car_model, created = CarModel.objects.get_or_create(
+                        name=model, car_make=car_make)
 
             return JsonResponse({"message": "Database populated successfully"})
         except json.JSONDecodeError:
@@ -238,10 +259,12 @@ def populate_database(request):
         # If request method is not POST, return a response with status 405 (Method Not Allowed)
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
+
 def dealers(request):
     # This function will render a template that should display dealer information.
     # Ensure the 'dealers_template.html' exists in your templates directory.
     return render(request, 'dealers_template.html')
+
 
 def get_dealers_template(request):
     # Renamed function to avoid conflict with the existing 'get_dealers' function.

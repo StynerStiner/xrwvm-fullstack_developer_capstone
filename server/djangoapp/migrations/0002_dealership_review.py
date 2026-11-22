@@ -14,7 +14,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Dealership',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
                 ('address', models.CharField(max_length=200)),
             ],
@@ -22,10 +23,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Review',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('text', models.TextField()),
                 ('rating', models.IntegerField()),
-                ('dealer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='djangoapp.dealership')),
+                ('dealer', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='djangoapp.dealership')),
             ],
         ),
     ]
