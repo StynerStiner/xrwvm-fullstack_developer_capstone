@@ -175,9 +175,6 @@ def get_dealer_details(request, dealer_id):
         return JsonResponse({"status": 400, "message": "Bad Request"})
 
 
-from django.shortcuts import render
-
-
 def dealer_details(request, dealer_id):
     if dealer_id:
         endpoint = f"/fetchDealer/{dealer_id}"
@@ -209,7 +206,8 @@ def get_dealers(request):
         for dealer in dealers:
             if not isinstance(dealer, dict):
                 logger.warning(f"Unexpected data format: {dealer}")
-                return render(request, 'dealers.html', {"error": "Failed to fetch dealers"})
+                return render(request, 'dealers.html',
+                              {"error": "Failed to fetch dealers"})
 
         # Create a context dictionary to pass the dealer data to the template
         context = {"dealers": dealers}
@@ -219,17 +217,19 @@ def get_dealers(request):
     else:
         # Handle the case when the response is not a list of dealers
         logger.warning(f"Unexpected data format: {dealers}")
-        return render(request, 'dealers.html', {"error": "Failed to fetch dealers"})
+        return render(request, 'dealers.html',
+                      {"error": "Failed to fetch dealers"})
 
 
 def add_review(request):
-    if (request.user.is_anonymous == False):
+    if not request.user.is_anonymous:
         data = json.loads(request.body)
         try:
-            response = post_review(data)
+            post_review(data)
             return JsonResponse({"status": 200})
-        except:
-            return JsonResponse({"status": 401, "message": "Error in posting review"})
+        except Exception:
+            return JsonResponse({"status": 401,
+                                 "message": "Error in posting review"})
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
 
@@ -256,18 +256,23 @@ def populate_database(request):
             # If error, return a response with status 400 (Bad Request)
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
     else:
-        # If request method is not POST, return a response with status 405 (Method Not Allowed)
+        # If request method is not POST, return a response
+        # with status 405 (Method Not Allowed)
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
 def dealers(request):
-    # This function will render a template that should display dealer information.
+    # This function will render a template
+    # that should display dealer information.
     # Ensure the 'dealers_template.html' exists in your templates directory.
     return render(request, 'dealers_template.html')
 
 
 def get_dealers_template(request):
-    # Renamed function to avoid conflict with the existing 'get_dealers' function.
-    # This function will render a template that should provide a UI for getting dealer information.
-    # Ensure the 'get_dealers_template.html' exists in your templates directory.
+    # Renamed function to avoid conflict with
+    # the existing 'get_dealers' function.
+    # This function will render a template that should provide a UI
+    # for getting dealer information.
+    # Ensure the 'get_dealers_template.html' exists
+    # in your templates directory.
     return render(request, 'get_dealers_template.html')
