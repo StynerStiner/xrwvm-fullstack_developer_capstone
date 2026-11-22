@@ -28,7 +28,8 @@ class Migration(migrations.Migration):
                 ('text', models.TextField()),
                 ('rating', models.IntegerField()),
                 ('dealer', models.ForeignKey(
-                    on_delete=django.db.models.deletion.CASCADE, to='djangoapp.dealership')),
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='djangoapp.dealership')),
             ],
         ),
     ]
