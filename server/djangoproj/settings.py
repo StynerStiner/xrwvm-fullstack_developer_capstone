@@ -29,12 +29,14 @@ SECRET_KEY =\
 DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
-    'kstiner101-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai'
+    'kstiner101-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01'
+    '.proxy.cognitiveclass.ai'
 ]
-
 CSRF_TRUSTED_ORIGINS = [
-    "https://kstiner101-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai",
-    "https://kstiner101-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai"
+    "https://kstiner101-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01"
+    ".proxy.cognitiveclass.ai",
+    "https://kstiner101-8000.theianext-1-labs-prod-misc-tools-us-east-0"
+    ".proxy.cognitiveclass.ai"
 ]
 
 REST_FRAMEWORK = {
@@ -108,7 +110,8 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME':
-        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'django.contrib.auth.password_validation.'
+        'UserAttributeSimilarityValidator',
     },
     {
         'NAME':
