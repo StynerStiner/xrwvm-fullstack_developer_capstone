@@ -16,9 +16,9 @@ const PostReview = () => {
   let root_url = curr_url.substring(0, curr_url.indexOf("postreview"));
   let params = useParams();
   let id = params.id;
-  let dealer_url = root_url + `djangoapp/dealer/${id}`;
-  let review_url = root_url + `djangoapp/add_review`;
-  let carmodels_url = root_url + `djangoapp/get_cars`;
+  let dealer_url = root_url + `djangoapp/get_dealer_details/${id}/`;
+  let review_url = root_url + `djangoapp/add_review/`;
+  let carmodels_url = root_url + `djangoapp/get_cars/`;
 
   const get_dealer = useCallback(async () => {
     const res = await fetch(dealer_url, {

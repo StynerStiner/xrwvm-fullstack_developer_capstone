@@ -65,7 +65,7 @@ def logout_user(request):
 def logout_request(request):
     logout(request)
     messages.success(request, "You have successfully logged out.")
-    return redirect('home')  # Redirect to 'home' page
+    return JsonResponse({"userName": ""})
 
 def registration(request):
     if request.method == 'POST':
@@ -156,7 +156,7 @@ def get_dealer_details(request, dealer_id):
     if(dealer_id):
         endpoint = "/fetchDealer/"+str(dealer_id)
         dealership = get_request(endpoint)
-        return JsonResponse({"status":200,"dealer":dealership})
+        return JsonResponse({"status":200,"dealer":[dealership]})
     else:
         return JsonResponse({"status":400,"message":"Bad Request"})
 from django.shortcuts import render
