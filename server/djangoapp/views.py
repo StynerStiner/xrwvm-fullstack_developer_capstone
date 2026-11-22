@@ -53,10 +53,13 @@ def login_user(request):
                         "message": "Invalid username or password"}
                 return JsonResponse(data, status=401)
         else:
-            # If either username or password is None, return a response with status 400
-            return JsonResponse({'error': 'Missing username or password'}, status=400)
+            # If either username or password is None,
+            # return a response with status 400
+            return JsonResponse({'error': 'Missing username or password'},
+                                status=400)
     else:
-        # If request method is not POST, return a response with status 405 (Method Not Allowed)
+        # If request method is not POST, return a response
+        # with status 405 (Method Not Allowed)
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
