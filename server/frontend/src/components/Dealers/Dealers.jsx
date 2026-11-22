@@ -11,12 +11,12 @@ const Dealers = () => {
   const DealersList = DealershipDatabase.dealerships;
   let [states, setStates] = useState([])
 
-  let dealer_url ="/djangoapp/get_dealers";
-  
+  let dealer_url ="/djangoapp/get_dealerships/";
+
   let dealer_url_by_state = "/djangoapp/get_dealers/";
- 
+
   const filterDealers = async (state) => {
-    let dealer_url_by_state = "/djangoapp/get_dealers/";
+    let dealer_url_by_state = "/djangoapp/get_dealerships/";
     if (state === "All") {
       get_dealers();
     } else {
@@ -42,12 +42,12 @@ const Dealers = () => {
         all_dealers.forEach((dealer)=>{
           states.push(dealer.state)
         });
-  
+
         setStates(Array.from(new Set(states)))
         setDealersList(all_dealers)
       }
     }, []); // Empty dependency array because get_dealers doesn't depend on any state or props
-  
+
     useEffect(() => {
       get_dealers();
     }, [get_dealers]); // Include get_dealers in the dependency array
@@ -71,7 +71,7 @@ return(
       {states.map(state => (
           <option value={state}>{state}</option>
       ))}
-      </select>        
+      </select>
 
       </th>
       {isLoggedIn ? (
@@ -79,7 +79,7 @@ return(
          ):<></>
       }
       </tr>
-     {DealersList.map(dealer => (
+     {dealersList.map(dealer => (
         <tr key={dealer.id}>
           <td>{dealer['id']}</td>
           <td><a href={'/dealer/'+dealer['id']}>{dealer['full_name']}</a></td>
@@ -91,14 +91,9 @@ return(
             <td><a href={`/postreview/${dealer['id']}`}><img src={review_icon} className="review_icon" alt="Post Review"/></a></td>
            ):<></>
           }
-          {/* Add your links here */}
-          <td>
-            <a href="https://kstiner101-8000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/get_dealers/">Get Dealers</a>
-            <a href="https://kstiner101-8000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealers/">Dealers List</a>
-          </td>
         </tr>
       ))}
-     </table>;
+     </table>
   </div>
 )
 }
