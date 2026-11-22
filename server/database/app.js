@@ -1,4 +1,3 @@
-
 const express = require('express');
 const mongoose = require('mongoose');
 const fs = require('fs');
@@ -13,11 +12,11 @@ app.use(cors())
 app.use(require('body-parser').urlencoded({ extended: false }));
 
 
-// const reviews_data = JSON.parse(fs.readFileSync("reviews.json", 'utf8'));
-// const dealerships_data = JSON.parse(fs.readFileSync("dealerships.json", 'utf8'));
+const reviews_data = JSON.parse(fs.readFileSync("data/reviews.json", 'utf8'));
+const dealerships_data = JSON.parse(fs.readFileSync("data/dealerships.json", 'utf8'));
 
 
-mongoose.connect('mongodb://localhost:27017/test')
+mongoose.connect('mongodb://mongo_db:27017/test')
  .then(() => {
    console.log('Connected to MongoDB')
  })
@@ -49,16 +48,16 @@ const Reviews = require('./review');
 const Dealerships = require('./dealership');
 
 
-// try {
-//   Reviews.deleteMany({}).then(()=>{
-//     Reviews.insertMany(reviews_data['reviews']);
-//   });
-//   Dealerships.deleteMany({}).then(()=>{
-//     Dealerships.insertMany(dealerships_data['dealerships']);
-//   });
- // } catch (error) {
-//   res.status(500).json({ error: 'Error fetching documents' });
-// }
+try {
+  Reviews.deleteMany({}).then(()=>{
+    Reviews.insertMany(reviews_data['reviews']);
+  });
+  Dealerships.deleteMany({}).then(()=>{
+    Dealerships.insertMany(dealerships_data['dealerships']);
+  });
+} catch (error) {
+  console.error('Error loading data', error);
+}
 
 
 

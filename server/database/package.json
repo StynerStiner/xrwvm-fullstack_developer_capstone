@@ -4,7 +4,7 @@
     "description": "",
     "main": "app.js",
     "scripts": {
-        "start": "cross-env node $APP_PATH",
+        "start": "cross-env node app.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
