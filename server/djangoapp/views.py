@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse, HttpResponse, Http404
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from .restapis import get_request, analyze_review_sentiments, post_review
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .models import CarMake, CarModel, Dealership
+from .models import CarMake, CarModel
 from .populate import initiate
 import json
 import logging
@@ -281,4 +281,3 @@ def get_dealers_template(request):
     # Ensure the 'get_dealers_template.html' exists
     # in your templates directory.
     return render(request, 'get_dealers_template.html')
-    
