@@ -140,7 +140,8 @@ def get_cars(request):
                     "CarMake": car_model.car_make.name})
     return JsonResponse({"CarModels": cars})
 
-# Update the `get_dealerships` render list of dealerships all by default, particular state if state is passed
+# Update the `get_dealerships` render list of dealerships all by default,
+# particular state if state is passed
 
 
 def get_dealerships(request, state="All"):
@@ -276,3 +277,4 @@ def get_dealers_template(request):
     # Ensure the 'get_dealers_template.html' exists
     # in your templates directory.
     return render(request, 'get_dealers_template.html')
+    
