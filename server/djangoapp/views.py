@@ -89,7 +89,6 @@ def registration(request):
         email = data.get('email')
 
         username_exist = False
-        email_exist = False
 
         try:
             # Check if user already exists
@@ -102,7 +101,8 @@ def registration(request):
         if not username_exist:
             # Create user in auth_user table
             user = User.objects.create_user(
-                username=username, first_name=first_name, last_name=last_name, password=password, email=email)
+                username=username, first_name=first_name, last_name=last_name,
+                password=password, email=email)
             # Login the user and redirect to list page
             login(request, user)
             data = {"userName": username, "status": "Authenticated"}
@@ -111,7 +111,8 @@ def registration(request):
             data = {"userName": username, "error": "Already Registered"}
             return JsonResponse(data)
     else:
-        # If request method is not POST, return a response with status 405 (Method Not Allowed)
+        # If request method is not POST, return a response
+        # with status 405 (Method Not Allowed)
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
